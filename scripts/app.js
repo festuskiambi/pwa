@@ -172,6 +172,21 @@
         statement;
     // TODO add cache logic here
 
+    if('caches' in window){
+      caches.match(url).then(function (response){
+        if (response){
+          response.json().then(function updateFromCache(json){
+            var results = json.query.results;
+            results.key = key;
+            results.label = label;
+            results.created = json.query.created;
+            app.updateForecastCard(results);
+          });
+        }
+
+      });
+    }
+
     // Fetch the latest data.
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
@@ -186,7 +201,7 @@
         }
       } else {
         // Return the initial weather forecast since no data is available.
-        app.updateForecastCard(initialWeatherForecast);
+        //app.updateForecastCard(initialWeatherForecast);
       }
     };
     request.open('GET', url);
@@ -357,5 +372,5 @@
              .register('./service-worker.js')
              .then(function(){console.log('service worker registered')});
 
-  };
+  }
 })();

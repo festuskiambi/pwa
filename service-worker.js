@@ -45,10 +45,10 @@ self.addEventListener('activate',function(event){
 });
 
 self.addEventListener('fetch',function(event){
-    console.log('[Service Worker] Fetch', e.request.url);
+    console.log('[Service Worker] Fetch', event.request.url);
     var dataUrl ='https://query.yahooapis.com/v1/public/yql';
 
-    if(event.request.indexOf(dataUrl) > -1){
+    if(event.request.url.indexOf(dataUrl) > -1){
      event.respondWith(
         caches.open(dataCacheName).then(function(cache){
             return fetch(event.request).then(function(response){
